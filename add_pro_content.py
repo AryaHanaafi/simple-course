@@ -47,22 +47,42 @@ function processData(input) {{
 def generate_pro_content():
     print("Meningkatkan kualitas konten materi (Text-Only, Sangat Panjang & Profesional)...")
     
-    courses = Course.objects.all()
-    if not courses.exists():
-        print("Tidak ada kursus ditemukan! Membuat kursus dasar secara otomatis...")
-        from courses.models import Category
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
-        admin_user = User.objects.filter(is_superuser=True).first()
-        if not admin_user:
-            admin_user = User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
-            
-        cat, _ = Category.objects.get_or_create(name="Pemrograman Web", slug="web", description="Kategori Web Development")
-        Course.objects.create(title='Dasar-Dasar HTML & CSS', slug='html-css', category=cat, instructor=admin_user, difficulty='beginner', is_published=True)
-        Course.objects.create(title='Backend dengan Python Django', slug='django', category=cat, instructor=admin_user, difficulty='intermediate', is_published=True)
-        Course.objects.create(title='Arsitektur Web Enterprise', slug='enterprise', category=cat, instructor=admin_user, difficulty='advanced', is_published=True)
+    from courses.models import Category
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    admin_user = User.objects.filter(is_superuser=True).first()
+    if not admin_user:
+        admin_user = User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
         
-        courses = Course.objects.all()
+    # Membuat 3 Instruktur
+    instructors = []
+    for i in range(1, 4):
+        inst, created = User.objects.get_or_create(username=f'instruktur{i}', email=f'instruktur{i}@lms.com')
+        if created:
+            inst.role = 'instructor'
+            inst.set_password('instruktur123')
+            inst.save()
+        instructors.append(inst)
+
+    # Membuat 3 Student
+    students = []
+    for i in range(1, 4):
+        stu, created = User.objects.get_or_create(username=f'student{i}', email=f'student{i}@lms.com')
+        if created:
+            stu.role = 'student'
+            stu.set_password('student123')
+            stu.save()
+        students.append(stu)
+
+    cat, _ = Category.objects.get_or_create(name="Pemrograman Web", slug="web", description="Kategori Web Development")
+    
+    Course.objects.get_or_create(slug='html-css', defaults={'title': 'Dasar-Dasar HTML & CSS', 'category': cat, 'instructor': instructors[0], 'difficulty': 'beginner', 'is_published': True})
+    Course.objects.get_or_create(slug='django', defaults={'title': 'Backend dengan Python Django', 'category': cat, 'instructor': instructors[1], 'difficulty': 'intermediate', 'is_published': True})
+    Course.objects.get_or_create(slug='enterprise', defaults={'title': 'Arsitektur Web Enterprise', 'category': cat, 'instructor': instructors[2], 'difficulty': 'advanced', 'is_published': True})
+    Course.objects.get_or_create(slug='js-modern', defaults={'title': 'Penguasaan JavaScript Modern', 'category': cat, 'instructor': instructors[0], 'difficulty': 'intermediate', 'is_published': True})
+    Course.objects.get_or_create(slug='devops-web', defaults={'title': 'DevOps untuk Web Developer', 'category': cat, 'instructor': instructors[1], 'difficulty': 'advanced', 'is_published': True})
+    
+    courses = Course.objects.all()
         
     course_structures = {
         "beginner": [

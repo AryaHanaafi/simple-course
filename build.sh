@@ -11,8 +11,7 @@ User = get_user_model();
 User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@example.com', 'admin123');
 
 from courses.models import Course, SiteSetting;
-if not Course.objects.exists():
-    import os; os.system('python add_pro_content.py');
+import os; os.system('python add_pro_content.py');
 
 setting, _ = SiteSetting.objects.get_or_create(id=1);
 setting.site_name = 'LMS';
