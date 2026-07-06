@@ -60,11 +60,35 @@ def api_get_categories(request):
         return JsonResponse({'status': 'success', 'data': data})
     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def api_get_courses(request):
     if request.method == 'GET':
         courses = Course.objects.filter(status='published').select_related('instructor', 'category')
+        
+        # Filtering
+        category_slug = request.GET.get('category')
+        search_query = request.GET.get('search')
+        
+        if category_slug:
+            courses = courses.filter(category__slug=category_slug)
+        if search_query:
+            courses = courses.filter(title__icontains=search_query)
+            
+        # Pagination
+        page = request.GET.get('page', 1)
+        limit = request.GET.get('limit', 10)
+        paginator = Paginator(courses, limit)
+        
+        try:
+            courses_page = paginator.page(page)
+        except PageNotAnInteger:
+            courses_page = paginator.page(1)
+        except EmptyPage:
+            courses_page = paginator.page(paginator.num_pages)
+            
         course_list = []
-        for c in courses:
+        for c in courses_page:
             course_list.append({
                 'id': c.id,
                 'title': c.title,
@@ -74,7 +98,18 @@ def api_get_courses(request):
                 'instructor': c.instructor.username,
                 'created_at': c.created_at.strftime("%Y-%m-%d %H:%M:%S")
             })
-        return JsonResponse({'status': 'success', 'data': course_list})
+            
+        return JsonResponse({
+            'status': 'success', 
+            'data': course_list,
+            'pagination': {
+                'total_items': paginator.count,
+                'total_pages': paginator.num_pages,
+                'current_page': courses_page.number,
+                'has_next': courses_page.has_next(),
+                'has_previous': courses_page.has_previous()
+            }
+        })
     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 def api_get_course_detail(request, course_id):
