@@ -92,12 +92,19 @@ DATABASES = {
 CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app', 'https://*.railway.app']
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://postgres.aammouzuzocpihenpref:WADaun0cxlr8SRCA@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres',
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+db_url = os.environ.get('DATABASE_URL', '')
+if db_url and '.supabase.co' not in db_url:
+    DATABASES['default'] = dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True,
     )
-}
 
 
 # Password validation
