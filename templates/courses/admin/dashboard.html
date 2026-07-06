@@ -28,7 +28,8 @@
 <div class="card">
     <h3 class="card-title">Pending Course Reviews</h3>
     {% if pending_courses %}
-        <table style="width:100%; text-align:left; border-collapse: collapse;">
+        <div class="table-wrapper">
+            <table style="width:100%; text-align:left; border-collapse: collapse;">
             <thead>
                 <tr style="border-bottom: 1px solid var(--border);">
                     <th style="padding: 10px;">Course Title</th>
@@ -48,6 +49,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        </div>
         
         <!-- Pagination for Pending Courses -->
         {% if pending_courses.has_other_pages %}
@@ -68,6 +70,7 @@
 
 <div class="card">
     <h3 class="card-title">All Courses (Super Access)</h3>
+    <div class="table-wrapper">
     <table style="width:100%; text-align:left; border-collapse: collapse;">
         <thead>
             <tr style="border-bottom: 1px solid var(--border);">
@@ -100,6 +103,7 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
     
     <!-- Pagination for All Courses -->
     {% if all_courses.has_other_pages %}

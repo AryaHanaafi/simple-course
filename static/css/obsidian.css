@@ -1070,6 +1070,7 @@ tr:hover td {
     .header-nav,
     .header-search,
     .auth-btn,
+    .header-auth-links,
     .brand-text {
         display: none !important;
     }

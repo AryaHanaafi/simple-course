@@ -32,7 +32,17 @@
             {% endfor %}
 
             <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
-                {% if not user.is_authenticated %}
+                {% if user.is_authenticated %}
+                    {% if user.role == 'superadmin' or user.is_superuser %}
+                        <a href="{% url 'admin_dashboard' %}" class="sidebar-link"><i class="fas fa-home"></i> Admin Dashboard</a>
+                        <a href="{% url 'admin_categories' %}" class="sidebar-link"><i class="fas fa-tags"></i> Manage Categories</a>
+                        <a href="{% url 'admin_users' %}" class="sidebar-link"><i class="fas fa-users"></i> Manage Users</a>
+                    {% elif user.role == 'instructor' %}
+                        <a href="{% url 'instructor_dashboard' %}" class="sidebar-link"><i class="fas fa-chalkboard-teacher"></i> Instructor Dashboard</a>
+                    {% elif user.role == 'student' %}
+                        <a href="{% url 'student_dashboard' %}" class="sidebar-link"><i class="fas fa-book-reader"></i> My Learning</a>
+                    {% endif %}
+                {% else %}
                     <a href="{% url 'login' %}" class="btn btn-outline" style="width:100%; justify-content:center; margin-bottom: 8px;">Login</a>
                     <a href="{% url 'register' %}" class="btn btn-primary" style="width:100%; justify-content:center;">Sign Up</a>
                 {% endif %}
@@ -85,7 +95,7 @@
             </button>
 
             {% if user.is_authenticated %}
-                <div class="d-flex gap-2 align-items-center">
+                <div class="d-flex gap-2 align-items-center header-auth-links">
                     {% if user.role == 'superadmin' or user.is_superuser %}
                         <a href="{% url 'admin_dashboard' %}" class="btn {% if request.path == '/admin-command/' %}btn-primary{% else %}btn-outline{% endif %}"><i class="fas fa-home"></i> <span>Dashboard</span></a>
                         <a href="{% url 'admin_categories' %}" class="btn {% if 'categories' in request.path %}btn-primary{% else %}btn-outline{% endif %}"><i class="fas fa-tags"></i> <span>Categories</span></a>
