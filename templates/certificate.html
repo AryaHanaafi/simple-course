@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sertifikat Kelulusan - {{ course.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;700&display=swap');
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            background: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .certificate-container {
+            width: 1122px; /* A4 Landscape width at 96 PPI */
+            height: 793px; /* A4 Landscape height at 96 PPI */
+            background: white;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 20px solid #1e293b;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            background-image: radial-gradient(#f1f5f9 2px, transparent 2px);
+            background-size: 32px 32px;
+        }
+        
+        .certificate-inner {
+            border: 4px double #cbd5e1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #0f172a;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+        }
+        
+        .recipient-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-style: italic;
+            color: #2563eb;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            min-width: 600px;
+            text-transform: capitalize;
+        }
+        
+        .course-text {
+            font-size: 1.25rem;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+        
+        .course-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 50px;
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-top: 40px;
+        }
+        
+        .signature-block {
+            text-align: center;
+            border-top: 1px solid #94a3b8;
+            padding-top: 10px;
+            width: 250px;
+        }
+        
+        .signature-block p {
+            margin: 0;
+            color: #475569;
+            font-size: 1rem;
+        }
+        
+        .cert-id {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-family: monospace;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(37,99,235,0.2);
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            body {
+                background: white;
+            }
+            .certificate-container {
+                box-shadow: none;
+                border: 10px solid #1e293b; /* Smaller border for print */
+                width: 100%;
+                height: 100vh;
+            }
+            .print-btn, .back-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="{% url 'student_course_detail' course.id %}" class="back-btn">Kembali ke Kursus</a>
+    <button class="print-btn" onclick="window.print()">Cetak PDF</button>
+
+    <div class="certificate-container">
+        <div class="certificate-inner">
+            <div class="subtitle">Sertifikat Kelulusan</div>
+            <div class="title">Certificate of Completion</div>
+            
+            <div class="course-text">Diberikan dengan bangga kepada:</div>
+            <div class="recipient-name">{{ student.first_name }} {{ student.last_name }}</div>
+            
+            <div class="course-text">Atas keberhasilannya menyelesaikan kursus:</div>
+            <div class="course-name">{{ course.title }}</div>
+            
+            <div class="footer">
+                <div class="signature-block">
+                    <p style="font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; margin-bottom: -10px;">{{ course.instructor.username }}</p>
+                    <p><b>{{ course.instructor.username }}</b></p>
+                    <p>Instruktur Utama</p>
+                </div>
+                <div class="signature-block">
+                    <p style="font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; margin-bottom: -10px;">Arya LMS</p>
+                    <p><b>Platform Pembelajaran</b></p>
+                    <p>Tanggal: {{ certificate.issued_at|date:"d M Y" }}</p>
+                </div>
+            </div>
+            
+            <div class="cert-id">ID Sertifikat: {{ certificate.certificate_id }}</div>
+        </div>
+    </div>
+
+</body>
+</html>

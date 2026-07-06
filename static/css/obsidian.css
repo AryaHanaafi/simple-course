@@ -593,38 +593,30 @@ body.dark-mode .content-body pre {
 /* ====== MOBILE RESPONSIVENESS ====== */
 @media (max-width: 768px) {
     .header {
-        position: relative;
-        flex-direction: column;
         padding: 16px;
         height: auto;
-        gap: 16px;
-        z-index: 1000;
+        gap: 8px;
     }
     
     .header .brand {
-        width: 100%;
-        justify-content: center;
         margin: 0;
+        font-size: 1.1rem;
     }
     
+    /* Hide search bar on mobile to keep header clean */
+    .header form[action*='student_catalog'] {
+        display: none !important;
+    }
+    
+    /* Keep the flex row, don't stack */
     .header .d-flex.align-items-center {
-        width: 100%;
         margin: 0 !important;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-    
-    form[action*='student_catalog'] {
-        margin: 0 !important;
-        max-width: 100% !important;
-        width: 100%;
+        gap: 8px !important;
     }
     
     .container {
         padding: 16px;
-        padding-top: 24px; /* Override 100px desktop padding since header is relative */
-        margin-top: 0;
+        margin-top: 16px;
     }
     
     .grid {
@@ -637,15 +629,17 @@ body.dark-mode .content-body pre {
         white-space: nowrap;
     }
     
-    .btn {
-        padding: 8px 16px;
-        font-size: 0.85rem;
+    /* Hide text inside header buttons on mobile */
+    .header .btn {
+        padding: 8px;
+        font-size: 0;
+    }
+    .header .btn i {
+        font-size: 1rem;
     }
     
-    /* Make dark mode toggle accessible on mobile */
+    /* Adjust theme toggle spacing */
     #themeToggle {
-        position: absolute;
-        top: 20px;
-        right: 20px;
+        margin-right: 4px;
     }
 }

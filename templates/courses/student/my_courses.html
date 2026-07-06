@@ -29,11 +29,13 @@
             </div>
         </div>
 
-        {% if en.is_completed %}
-            <span class="badge badge-published" style="display: block; text-align: center; margin-bottom: 15px;">Completed</span>
+        {% if en.progress_percentage >= 100 %}
+            <span class="badge badge-published" style="display: block; text-align: center; margin-bottom: 10px;">Completed</span>
+            <a href="{% url 'certificate_view' en.course.id %}" class="btn" style="background-color: var(--success); color: white; width: 100%; text-align: center; display:block; box-sizing:border-box; margin-bottom: 8px;"><i class="fas fa-certificate"></i> Unduh Sertifikat</a>
+            <a href="{% url 'student_course_detail' en.course.id %}" class="btn btn-outline" style="width: 100%; text-align: center; display:block; box-sizing:border-box;">Review Course</a>
+        {% else %}
+            <a href="{% url 'student_course_detail' en.course.id %}" class="btn btn-primary" style="width: 100%; text-align: center; display:block; box-sizing:border-box;">Continue Learning</a>
         {% endif %}
-
-        <a href="{% url 'student_course_detail' en.course.id %}" class="btn btn-primary" style="width: 100%; text-align: center; display:block; box-sizing:border-box;">Continue Learning</a>
     </div>
     {% empty %}
     <div style="grid-column: 1 / -1; text-align: center; padding: 64px 24px; background: white; border-radius: 16px; border: 1px dashed #cbd5e1;">

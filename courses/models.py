@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
+import uuid
 
 class User(AbstractUser):
     ROLES = (
@@ -219,4 +220,10 @@ class LessonComment(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.lesson.title}"
+        return f"Comment by {self.user.username} on {self.lesson.title}"c l a s s   C e r t i f i c a t e ( m o d e l s . M o d e l ) :  
+         e n r o l l m e n t   =   m o d e l s . O n e T o O n e F i e l d ( E n r o l l m e n t ,   o n _ d e l e t e = m o d e l s . C A S C A D E ,   r e l a t e d _ n a m e = ' c e r t i f i c a t e ' )  
+         c e r t i f i c a t e _ i d   =   m o d e l s . U U I D F i e l d ( d e f a u l t = u u i d . u u i d 4 ,   e d i t a b l e = F a l s e ,   u n i q u e = T r u e )  
+         i s s u e d _ a t   =   m o d e l s . D a t e T i m e F i e l d ( a u t o _ n o w _ a d d = T r u e )  
+         d e f   _ _ s t r _ _ ( s e l f ) :  
+                 r e t u r n   f ' C e r t i f i c a t e   f o r   { s e l f . e n r o l l m e n t . s t u d e n t . u s e r n a m e } '  
+ 

@@ -48,13 +48,13 @@
             {% if user.is_authenticated %}
                 <div class="d-flex gap-2" style="margin-right: 16px;">
                 {% if user.role == 'superadmin' or user.is_superuser %}
-                    <a href="{% url 'admin_dashboard' %}" class="btn {% if request.path == '/admin-command/' %}btn-primary{% else %}btn-outline{% endif %}">Dashboard</a>
-                    <a href="{% url 'admin_categories' %}" class="btn {% if 'categories' in request.path %}btn-primary{% else %}btn-outline{% endif %}">Categories</a>
-                    <a href="{% url 'admin_users' %}" class="btn {% if 'users' in request.path %}btn-primary{% else %}btn-outline{% endif %}">Users</a>
+                    <a href="{% url 'admin_dashboard' %}" class="btn {% if request.path == '/admin-command/' %}btn-primary{% else %}btn-outline{% endif %}"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="{% url 'admin_categories' %}" class="btn {% if 'categories' in request.path %}btn-primary{% else %}btn-outline{% endif %}"><i class="fas fa-tags"></i> Categories</a>
+                    <a href="{% url 'admin_users' %}" class="btn {% if 'users' in request.path %}btn-primary{% else %}btn-outline{% endif %}"><i class="fas fa-users"></i> Users</a>
                 {% elif user.role == 'instructor' %}
-                    <a href="{% url 'instructor_dashboard' %}" class="btn btn-outline">Dashboard</a>
+                    <a href="{% url 'instructor_dashboard' %}" class="btn btn-outline"><i class="fas fa-chalkboard-teacher"></i> Dashboard</a>
                 {% elif user.role == 'student' %}
-                    <a href="{% url 'student_dashboard' %}" style="font-weight: 500; font-size: 0.95rem; color: var(--text-secondary); text-decoration: none; padding: 6px 12px; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='var(--text-secondary)'">My Learning</a>
+                    <a href="{% url 'student_dashboard' %}" class="btn btn-outline"><i class="fas fa-book-reader"></i> My Learning</a>
                 {% endif %}
                 </div>
                 

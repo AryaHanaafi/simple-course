@@ -2,8 +2,9 @@ from django.urls import path
 from . import views, api_views
 
 urlpatterns = [
-    # Auth
-    path('', views.login_view, name='login'),
+    # Public & Auth
+    path('', views.landing_page, name='landing_page'),
+    path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
     path('impersonate/<int:user_id>/', views.impersonate_user, name='impersonate_user'),
@@ -51,6 +52,7 @@ urlpatterns = [
     path('student-space/catalog/', views.student_catalog, name='student_catalog'),
     path('student-space/course/<int:course_id>/enroll/', views.enroll_course, name='enroll_course'),
     path('student-space/course/<int:course_id>/', views.student_course_detail, name='student_course_detail'),
+    path('student-space/course/<int:course_id>/certificate/', views.certificate_view, name='certificate_view'),
     path('student-space/lesson/<int:lesson_id>/', views.take_lesson, name='take_lesson'),
     path('student-space/quiz/<int:bank_id>/submit/', views.submit_quiz_ajax, name='submit_quiz_ajax'),
 

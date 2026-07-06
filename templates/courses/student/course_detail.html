@@ -25,9 +25,12 @@
             <span>Your Progress</span>
             <span>{{ enrollment.progress_percentage }}%</span>
         </div>
-        <div style="width: 100%; background-color: var(--border); border-radius: 10px; height: 10px; overflow: hidden;">
+        <div style="width: 100%; background-color: var(--border); border-radius: 10px; height: 10px; overflow: hidden; margin-bottom: 12px;">
             <div style="width: {{ enrollment.progress_percentage }}%; height: 100%; background-color: var(--success);"></div>
         </div>
+        {% if enrollment.progress_percentage >= 100 %}
+            <a href="{% url 'certificate_view' course.id %}" class="btn" style="background-color: var(--success); color: white; display: inline-block;"><i class="fas fa-certificate"></i> Unduh Sertifikat</a>
+        {% endif %}
     </div>
 
     <h3>Course Content</h3>

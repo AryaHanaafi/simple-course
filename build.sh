@@ -2,6 +2,7 @@
 set -o errexit
 
 python manage.py collectstatic --no-input
+python manage.py makemigrations
 python manage.py migrate
 
 # Buat akun admin otomatis dan isi data dummy jika database kosong

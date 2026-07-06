@@ -585,3 +585,30 @@ def learning_path_detail(request, slug):
         'path_courses': path_courses,
         'enrolled_course_ids': enrolled_course_ids
     })
+
+
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect_based_on_role(request.user)
+    courses = Course.objects.filter(status='published').order_by('-created_at')[:3]
+    return render(request, 'landing.html', {'featured_courses': courses})
+
+def certificate_view(request, course_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    course = get_object_or_404(Course, id=course_id)
+    enrollment = get_object_or_404(Enrollment, student=request.user, course=course)
+    
+    if enrollment.progress_percentage < 100:
+        messages.error(request, 'Anda belum menyelesaikan kursus ini sepenuhnya.')
+        return redirect('student_course_detail', course_id=course.id)
+        
+    from .models import Certificate
+    certificate, _ = Certificate.objects.get_or_create(enrollment=enrollment)
+    
+    return render(request, 'certificate.html', {
+        'certificate': certificate,
+        'course': course,
+        'student': request.user
+    })
