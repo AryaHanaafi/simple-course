@@ -9,12 +9,46 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Mobile Sidebar & Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 700; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Menu</span>
+            <button class="close-sidebar-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-content">
+            <!-- Search -->
+            <form action="{% url 'student_catalog' %}" method="get" class="sidebar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" name="q" placeholder="Search courses...">
+            </form>
+            
+            <a href="{% url 'learning_paths_list' %}" class="sidebar-link"><i class="fas fa-road"></i> Learning Paths <span class="badge badge-published" style="margin-left:auto;">NEW</span></a>
+            
+            <div style="padding: 12px 16px; font-weight: 600; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 10px;">Categories</div>
+            <a href="{% url 'student_catalog' %}" class="sidebar-link"><i class="fas fa-border-all"></i> All Courses</a>
+            {% for cat in global_categories %}
+                <a href="{% url 'student_catalog' %}?category={{ cat.slug }}" class="sidebar-link"><i class="fas fa-tag"></i> {{ cat.name }}</a>
+            {% endfor %}
 
+            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="btn btn-outline" style="width:100%; justify-content:center; margin-bottom: 8px;">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary" style="width:100%; justify-content:center;">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </aside>
 
     <header class="header">
-        <a href="/" class="brand">
-            <i class="fas fa-graduation-cap"></i> {{ site_setting.site_name|default:"LMS" }}
-        </a>
+        <div class="d-flex align-items-center gap-2">
+            <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/" class="brand">
+                <i class="fas fa-graduation-cap"></i> <span class="brand-text">{{ site_setting.site_name|default:"LMS" }}</span>
+            </a>
+        </div>
         
         <!-- Nav links (hidden on mobile) -->
         <nav class="header-nav d-flex align-items-center">
@@ -93,8 +127,8 @@
                 </div>
                 
             {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
-                <a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a>
+                <a href="{% url 'login' %}" class="btn btn-outline auth-btn">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-primary auth-btn">Sign Up</a>
             {% endif %}
         </div>
     </header>
@@ -133,6 +167,13 @@
                     }
                 }
             }
+        }
+
+        // Sidebar Toggle Logic
+        function toggleSidebar() {
+            document.getElementById("sidebarOverlay").classList.toggle("show");
+            document.getElementById("mobileSidebar").classList.toggle("open");
+            document.body.style.overflow = document.getElementById("mobileSidebar").classList.contains("open") ? "hidden" : "";
         }
 
         // Theme Toggle Logic

@@ -38,8 +38,8 @@
         {% endif %}
     </div>
     {% empty %}
-    <div style="grid-column: 1 / -1; text-align: center; padding: 64px 24px; background: white; border-radius: 16px; border: 1px dashed #cbd5e1;">
-        <i class="fas fa-rocket" style="font-size: 4rem; color: #bae6fd; margin-bottom: 24px;"></i>
+    <div style="grid-column: 1 / -1; text-align: center; padding: 64px 24px; background: var(--card-bg-2); border-radius: 16px; border: 1px dashed var(--border-strong);">
+        <i class="fas fa-rocket" style="font-size: 4rem; color: var(--accent-light); margin-bottom: 24px;"></i>
         <h3 style="color: var(--text-primary); font-size: 1.5rem; margin-bottom: 12px;">Your learning journey starts here!</h3>
         <p style="color: var(--text-secondary); max-width: 400px; margin: 0 auto 24px auto;">You haven't enrolled in any courses yet. Discover our catalog and find the perfect course to upgrade your skills.</p>
         <a href="{% url 'student_catalog' %}" class="btn btn-primary" style="padding: 12px 32px; font-size: 1.05rem;"><i class="fas fa-search"></i> Browse Catalog</a>

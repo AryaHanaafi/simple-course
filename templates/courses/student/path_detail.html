@@ -4,11 +4,11 @@
 {% block content %}
 <div class="mb-4" style="font-size: 0.9rem; color: var(--text-secondary);">
     <a href="{% url 'learning_paths_list' %}" style="color: var(--text-secondary); text-decoration: none;">Learning Paths</a> 
-    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: #cbd5e1;"></i>
+    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: var(--text-muted);"></i>
     <span style="color: var(--accent-color); font-weight: 500;">{{ path.title }}</span>
 </div>
 
-<div class="card" style="padding: 32px; margin-bottom: 32px; background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);">
+<div class="card" style="padding: 32px; margin-bottom: 32px; background: var(--card-bg-2);">
     <div class="d-flex align-items-center gap-3" style="margin-bottom: 16px;">
         <div style="width: 56px; height: 56px; border-radius: 16px; background: var(--accent-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 10px 15px -3px rgba(37,99,235,0.2);">
             <i class="fas fa-route"></i>
@@ -26,15 +26,15 @@
 <h3 style="margin-bottom: 24px;">Course Sequence</h3>
 
 <div style="position: relative;">
-    <!-- Vertical Line -->
+    <!-- Timeline Line -->
     <div style="position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: var(--border); z-index: 0;"></div>
     
     <div style="display: flex; flex-direction: column; gap: 24px; position: relative; z-index: 1;">
         {% for pc in path_courses %}
             <div class="card" style="display: flex; align-items: stretch; padding: 0; overflow: hidden;">
-                <!-- Number indicator -->
-                <div style="width: 50px; background: white; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--border);">
-                    <div style="width: 32px; height: 32px; border-radius: 50%; background: {% if pc.course.id in enrolled_course_ids %}#10b981{% else %}var(--accent-color){% endif %}; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                <!-- Timeline Node -->
+                <div style="width: 50px; background: var(--card-bg); display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--border);">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: {% if pc.course.id in enrolled_course_ids %}var(--success){% else %}var(--accent-color){% endif %}; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                         {{ forloop.counter }}
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                     
                     <div>
                         {% if pc.course.id in enrolled_course_ids %}
-                            <a href="{% url 'student_course_detail' course_id=pc.course.id %}" class="btn btn-outline" style="border-color: #10b981; color: #10b981;"><i class="fas fa-check"></i> Enrolled</a>
+                            <a href="{% url 'student_course_detail' course_id=pc.course.id %}" class="btn btn-outline" style="border-color: var(--success); color: var(--success);"><i class="fas fa-check"></i> Enrolled</a>
                         {% else %}
                             <a href="{% url 'enroll_course' course_id=pc.course.id %}" class="btn btn-primary">Enroll Now</a>
                         {% endif %}

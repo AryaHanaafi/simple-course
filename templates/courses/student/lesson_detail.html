@@ -4,9 +4,9 @@
 {% block content %}
 <div class="mb-4" style="font-size: 0.9rem; color: var(--text-secondary);">
     <a href="{% url 'student_dashboard' %}" style="color: var(--text-secondary); text-decoration: none;"><i class="fas fa-home"></i> Dashboard</a> 
-    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: #cbd5e1;"></i>
+    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: var(--text-muted);"></i>
     <a href="{% url 'student_course_detail' course.id %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a> 
-    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: #cbd5e1;"></i>
+    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: var(--text-muted);"></i>
     <span style="color: var(--accent-color); font-weight: 500;">{{ lesson.title }}</span>
 </div>
 
@@ -26,7 +26,7 @@
         {% endif %}
 
         {% if lesson.attachment %}
-            <div class="mt-4 mb-4 p-3" style="background-color: var(--bg-color); border: 1px solid var(--border); border-radius: 12px;">
+            <div class="mt-4 mb-4 p-3" style="background-color: var(--card-bg-2); border: 1px solid var(--border); border-radius: 12px;">
                 <h4 style="margin-top:0; margin-bottom: 10px; font-size: 1rem;"><i class="fas fa-paperclip"></i> Resources</h4>
                 <a href="{{ lesson.attachment.url }}" class="btn btn-outline"><i class="fas fa-download"></i> Download Attachment</a>
             </div>
