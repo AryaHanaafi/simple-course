@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Review Course: {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="back-btn-row">
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</a>
+</div>
+
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <h2>Review Course: {{ course.title }}</h2>
+    <p><strong>Instructor:</strong> {{ course.instructor.get_full_name|default:course.instructor.username }}</p>
+    <p><strong>Difficulty:</strong> {{ course.get_difficulty_display }}</p>
+    <p><strong>Description:</strong> {{ course.description }}</p>
+    
+    <hr style="border-color: var(--border); margin: 20px 0;">
+    
+    <form method="post" style="display: flex; gap: 10px;">
+        {% csrf_token %}
+        <button type="submit" name="action" value="approve" class="btn btn-success" style="flex: 1;">Approve & Publish</button>
+        <button type="submit" name="action" value="reject" class="btn btn-danger" style="flex: 1;">Reject (Back to Draft)</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'courses/instructor/instructor_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+    <div>
+        <h1 style="font-size: 1.75rem; color: var(--dark); font-weight: 700; margin-bottom: 8px;">Studio Dashboard</h1>
+        <p style="color: var(--gray-700); margin: 0;">Welcome back! Here's what's happening with your courses today.</p>
+    </div>
+    <a href="{% url 'create_course' %}" class="btn btn-primary">
+        <i class="fas fa-plus" style="margin-right: 8px;"></i> Create Course
+    </a>
+</div>
+
+<!-- Analytics Cards -->
+<div class="grid-3" style="margin-bottom: 32px;">
+    <div class="card" style="border-top: 4px solid #3b82f6;">
+        <div style="color: var(--gray-700); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Total Students</div>
+        <div style="font-size: 2.5rem; font-weight: 700; margin-top: 8px; color: var(--dark);">{{ total_students|default:"0" }}</div>
+    </div>
+    <div class="card" style="border-top: 4px solid #10b981;">
+        <div style="color: var(--gray-700); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Active Courses</div>
+        <div style="font-size: 2.5rem; font-weight: 700; margin-top: 8px; color: var(--dark);">{{ active_courses|default:"0" }} <span style="font-size: 1rem; color: var(--gray-700); font-weight: 500;">/ {{ total_courses|default:"0" }}</span></div>
+    </div>
+    <div class="card" style="border-top: 4px solid #8b5cf6;">
+        <div style="color: var(--gray-700); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Total Enrollments</div>
+        <div style="font-size: 2.5rem; font-weight: 700; margin-top: 8px; color: var(--dark);">{{ total_enrollments|default:"0" }}</div>
+    </div>
+</div>
+
+<h2 style="font-size: 1.25rem; margin-bottom: 16px;">Your Courses</h2>
+<div class="card" style="padding: 0; overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead style="background: var(--gray-100); text-align: left; border-bottom: 1px solid var(--gray-200);">
+            <tr>
+                <th style="padding: 16px 24px; font-weight: 600; color: var(--gray-700);">Course</th>
+                <th style="padding: 16px 24px; font-weight: 600; color: var(--gray-700);">Status</th>
+                <th style="padding: 16px 24px; font-weight: 600; color: var(--gray-700);">Date Created</th>
+                <th style="padding: 16px 24px; font-weight: 600; color: var(--gray-700); text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr style="border-bottom: 1px solid var(--gray-200); transition: background 0.2s;">
+                <td style="padding: 16px 24px; font-weight: 500;">{{ course.title }}</td>
+                <td style="padding: 16px 24px;">
+                    <span class="badge badge-{% if course.status == 'published' %}published{% elif course.status == 'draft' %}draft{% else %}pending{% endif %}">
+                        {{ course.get_status_display }}
+                    </span>
+                </td>
+                <td style="padding: 16px 24px; color: var(--gray-700);">{{ course.created_at|date:"M d, Y" }}</td>
+                <td style="padding: 16px 24px; text-align: right;">
+                    <a href="{% url 'instructor_course_manage' course.id %}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">Manage</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 32px; text-align: center; color: var(--gray-700);">
+                    <p style="margin-bottom: 16px;">You haven't created any courses yet.</p>
+                    <a href="{% url 'create_course' %}" class="btn btn-primary">Create Your First Course</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

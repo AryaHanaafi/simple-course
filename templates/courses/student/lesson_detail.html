@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}{{ lesson.title }}{% endblock %}
+
+{% block content %}
+<div class="mb-4" style="font-size: 0.9rem; color: var(--text-secondary);">
+    <a href="{% url 'student_dashboard' %}" style="color: var(--text-secondary); text-decoration: none;"><i class="fas fa-home"></i> Dashboard</a> 
+    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: #cbd5e1;"></i>
+    <a href="{% url 'student_course_detail' course.id %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a> 
+    <i class="fas fa-chevron-right" style="font-size: 0.7rem; margin: 0 8px; color: #cbd5e1;"></i>
+    <span style="color: var(--accent-color); font-weight: 500;">{{ lesson.title }}</span>
+</div>
+
+<div class="grid" style="grid-template-columns: 1fr 300px; align-items: start;">
+    <!-- Main Content Area -->
+    <div class="card" style="margin-bottom: 0;">
+        <h2 class="card-title text-center" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 30px;">{{ lesson.title }}</h2>
+        
+        {% if lesson.content_format == 'video' %}
+            <div class="video-container" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);">
+                {{ lesson.content|safe }}
+            </div>
+        {% elif lesson.content_format == 'text' %}
+            <div class="content-body" style="margin-bottom: 24px;">
+                {{ lesson.content|safe }}
+            </div>
+        {% endif %}
+
+        {% if lesson.attachment %}
+            <div class="mt-4 mb-4 p-3" style="background-color: var(--bg-color); border: 1px solid var(--border); border-radius: 12px;">
+                <h4 style="margin-top:0; margin-bottom: 10px; font-size: 1rem;"><i class="fas fa-paperclip"></i> Resources</h4>
+                <a href="{{ lesson.attachment.url }}" class="btn btn-outline"><i class="fas fa-download"></i> Download Attachment</a>
+            </div>
+        {% endif %}
+
+        <hr style="border-top: 2px solid var(--border); margin: 32px 0 24px 0;">
+
+        <div class="d-flex justify-content-between align-items-center">
+            {% if progress.is_completed %}
+                <span class="badge badge-published" style="padding: 8px 16px; font-size: 0.9rem;"><i class="fas fa-check-circle"></i> Completed</span>
+            {% else %}
+                <form method="post" action="{% url 'take_lesson' lesson.id %}" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Mark as Complete</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sidebar Area -->
+    <div class="card" style="margin-bottom: 0; padding: 20px;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 12px;">
+            Course Content
+        </h3>
+        
+        <div style="max-height: calc(100vh - 200px); overflow-y: auto;">
+            {% for section in sections %}
+                <div style="margin-bottom: 16px;">
+                    <h4 style="font-size: 1rem; margin-bottom: 8px; color: var(--text-secondary);">{{ section.title }}</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        {% for l in section.lessons.all %}
+                            <li style="margin-bottom: 4px;">
+                                <a href="{% url 'take_lesson' l.id %}" 
+                                   style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; text-decoration: none; transition: background-color 0.2s;
+                                          {% if l.id == lesson.id %}background-color: var(--accent-color); color: white;{% else %}background-color: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border);{% endif %}">
+                                    <span style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">
+                                        {% if l.content_format == 'video' %}<i class="fas fa-play-circle" style="margin-right: 6px;"></i>{% else %}<i class="fas fa-file-alt" style="margin-right: 6px;"></i>{% endif %}
+                                        {{ l.title }}
+                                    </span>
+                                    {% if l.id in completed_lessons %}
+                                        <i class="fas fa-check-circle" style="color: {% if l.id == lesson.id %}white{% else %}var(--success){% endif %}; font-size: 14px;"></i>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% empty %}
+                <p class="text-muted">No sections available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

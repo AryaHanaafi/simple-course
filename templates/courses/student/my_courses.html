@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}My Courses{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 style="margin: 0;">My Learning Dashboard</h2>
+        <p class="text-muted" style="margin-top: 5px;">Welcome back, <strong>{{ request.user.first_name|default:request.user.username }}</strong>! Pick up where you left off.</p>
+    </div>
+    <a href="{% url 'student_catalog' %}" class="btn btn-primary"><i class="fas fa-compass"></i> Explore More Courses</a>
+</div>
+
+<div class="grid">
+    {% for en in enrollments %}
+    <div class="card">
+        <div style="width: 100%; height: 150px; background: linear-gradient(135deg, var(--accent-color), #818cf8); display: flex; align-items:center; justify-content:center; color: white;">
+            <i class="fas {% if en.course.category.slug == 'design' %}fa-paint-brush{% elif en.course.category.slug == 'business' %}fa-chart-pie{% else %}fa-laptop-code{% endif %}" style="font-size: 3.5rem; opacity: 0.8;"></i>
+        </div>
+        
+        <h3 class="card-title" style="margin-top: 15px;">{{ en.course.title }}</h3>
+        
+        <div style="margin: 15px 0;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px;">
+                <span>Progress</span>
+                <span>{{ en.progress_percentage }}%</span>
+            </div>
+            <div style="width: 100%; background-color: var(--border); border-radius: 10px; height: 10px; overflow: hidden;">
+                <div style="width: {{ en.progress_percentage }}%; height: 100%; background-color: var(--success);"></div>
+            </div>
+        </div>
+
+        {% if en.is_completed %}
+            <span class="badge badge-published" style="display: block; text-align: center; margin-bottom: 15px;">Completed</span>
+        {% endif %}
+
+        <a href="{% url 'student_course_detail' en.course.id %}" class="btn btn-primary" style="width: 100%; text-align: center; display:block; box-sizing:border-box;">Continue Learning</a>
+    </div>
+    {% empty %}
+    <div style="grid-column: 1 / -1; text-align: center; padding: 64px 24px; background: white; border-radius: 16px; border: 1px dashed #cbd5e1;">
+        <i class="fas fa-rocket" style="font-size: 4rem; color: #bae6fd; margin-bottom: 24px;"></i>
+        <h3 style="color: var(--text-primary); font-size: 1.5rem; margin-bottom: 12px;">Your learning journey starts here!</h3>
+        <p style="color: var(--text-secondary); max-width: 400px; margin: 0 auto 24px auto;">You haven't enrolled in any courses yet. Discover our catalog and find the perfect course to upgrade your skills.</p>
+        <a href="{% url 'student_catalog' %}" class="btn btn-primary" style="padding: 12px 32px; font-size: 1.05rem;"><i class="fas fa-search"></i> Browse Catalog</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

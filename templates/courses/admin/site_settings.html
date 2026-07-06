@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Site Settings{% endblock %}
+
+{% block content %}
+<div class="back-btn-row">
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</a>
+</div>
+
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <h2>Global Site Settings</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Site Name (Appears in Navbar and Title)</label>
+            <input type="text" name="site_name" class="form-control" value="{{ setting.site_name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Announcement Banner Text</label>
+            <textarea name="announcement_banner" class="form-control" rows="3" placeholder="e.g. Server maintenance tonight at 12 AM">{{ setting.announcement_banner|default:"" }}</textarea>
+        </div>
+        
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" name="is_banner_active" id="is_banner_active" {% if setting.is_banner_active %}checked{% endif %}>
+            <label for="is_banner_active" style="margin: 0;">Show Announcement Banner globally</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Save Settings</button>
+    </form>
+</div>
+{% endblock %}

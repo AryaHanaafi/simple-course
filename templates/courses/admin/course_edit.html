@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Edit Course: {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="back-btn-row">
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</a>
+</div>
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>Super Admin: Edit Course</h2>
+    <p>You are overriding the details for <strong>{{ course.title }}</strong> owned by <strong>{{ course.instructor.username }}</strong>.</p>
+    <hr style="border-color: var(--border); margin: 20px 0;">
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Course Title</label>
+            <input type="text" name="title" class="form-control" value="{{ course.title }}" required>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" class="form-control" rows="5" required>{{ course.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Difficulty</label>
+            <select name="difficulty" class="form-control" required>
+                <option value="beginner" {% if course.difficulty == 'beginner' %}selected{% endif %}>Beginner</option>
+                <option value="intermediate" {% if course.difficulty == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                <option value="advanced" {% if course.difficulty == 'advanced' %}selected{% endif %}>Advanced</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Status</label>
+            <select name="status" class="form-control" required>
+                <option value="draft" {% if course.status == 'draft' %}selected{% endif %}>Draft</option>
+                <option value="pending_review" {% if course.status == 'pending_review' %}selected{% endif %}>Pending Review</option>
+                <option value="published" {% if course.status == 'published' %}selected{% endif %}>Published</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

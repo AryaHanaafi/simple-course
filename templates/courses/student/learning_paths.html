@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Learning Paths{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 40px; padding: 40px 20px; background: var(--card-bg); border-radius: 20px; box-shadow: var(--shadow-sm);">
+    <h1 style="margin: 0 0 16px 0; font-size: 2.5rem; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Learning Paths</h1>
+    <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">Follow curated step-by-step paths designed by our top experts to achieve your career goals.</p>
+</div>
+
+{% if paths %}
+    <div class="grid" style="gap: 24px;">
+        {% for path in paths %}
+            <div class="card" style="padding: 24px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-md)'">
+                <div class="d-flex align-items-center gap-3" style="margin-bottom: 16px;">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: #eff6ff; color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.3rem;">{{ path.title }}</h3>
+                        <span style="font-size: 0.85rem; color: var(--text-secondary);">{{ path.path_courses.count }} Courses</span>
+                    </div>
+                </div>
+                
+                <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
+                    {{ path.description|truncatewords:20|default:"Master a new skill with this structured learning path." }}
+                </p>
+                
+                <a href="{% url 'learning_path_detail' slug=path.slug %}" class="btn btn-primary" style="width: 100%; text-align: center;">View Path Details <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-route"></i>
+        </div>
+        <h3 class="empty-state-title">No Learning Paths Yet</h3>
+        <p class="empty-state-desc">Our instructors are still working on curating the best learning paths for you. Check back soon!</p>
+        <a href="{% url 'student_catalog' %}" class="btn btn-primary">Explore Individual Courses</a>
+    </div>
+{% endif %}
+{% endblock %}

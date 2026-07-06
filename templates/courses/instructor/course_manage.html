@@ -1,0 +1,195 @@
+{% extends 'courses/instructor/instructor_base.html' %}
+{% block title %}Manage: {{ course.title }}{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+    <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+            <a href="{% url 'instructor_dashboard' %}" style="color: var(--gray-700); text-decoration: none;"><i class="fas fa-arrow-left"></i></a>
+            <h1 style="font-size: 1.5rem; color: var(--dark); font-weight: 700; margin: 0;">{{ course.title }}</h1>
+            <span class="badge badge-{% if course.status == 'published' %}published{% elif course.status == 'draft' %}draft{% else %}pending{% endif %}">
+                {{ course.get_status_display }}
+            </span>
+        </div>
+        <p style="color: var(--gray-700); margin: 0; margin-left: 28px;">Manage curriculum, assignments, and announcements.</p>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Main Content Area -->
+    <div>
+        <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 24px;">
+            <!-- Tabs Header -->
+            <div style="display: flex; border-bottom: 1px solid var(--gray-200); background: var(--gray-100);">
+                <button class="tab-btn active" onclick="switchTab('curriculum')" style="flex: 1; padding: 16px; border: none; background: transparent; font-weight: 600; cursor: pointer; border-bottom: 2px solid var(--primary); color: var(--primary);">Curriculum</button>
+                <button class="tab-btn" onclick="switchTab('announcements')" style="flex: 1; padding: 16px; border: none; background: transparent; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; color: var(--gray-700);">Announcements</button>
+            </div>
+
+            <!-- Tab Content: Curriculum -->
+            <div id="tab-curriculum" style="padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.1rem;">Course Curriculum</h3>
+                    <a href="{% url 'instructor_section_create' course.id %}" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;"><i class="fas fa-plus"></i> Add Module</a>
+                </div>
+
+                <div id="curriculum-container">
+                    {% for section in sections %}
+                    <div class="section-card" style="border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 16px; background: #fff;">
+                        <div style="padding: 16px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0;">
+                            <div style="font-weight: 600;"><i class="fas fa-folder-open" style="color: var(--gray-700); margin-right: 8px;"></i>{{ section.title }}</div>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="{% url 'instructor_lesson_create' section.id %}" class="btn btn-primary" style="padding: 4px 10px; font-size: 0.8rem;"><i class="fas fa-plus"></i> Content</a>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 16px;">
+                            {% if section.lessons.all %}
+                            <ul class="lesson-list" style="list-style: none; padding: 0;">
+                                {% for lesson in section.lessons.all %}
+                                <li data-id="{{ lesson.id }}" class="lesson-item" style="padding: 12px; border: 1px solid var(--gray-200); border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; cursor: grab; background: #fff;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <i class="fas fa-grip-vertical" style="color: var(--gray-200);"></i>
+                                        <span>
+                                            {% if lesson.content_format == 'video' %}<i class="fas fa-play-circle" style="color: var(--primary);"></i>
+                                            {% elif lesson.content_format == 'quiz' %}<i class="fas fa-question-circle" style="color: #8b5cf6;"></i>
+                                            {% elif lesson.content_format == 'assignment' %}<i class="fas fa-clipboard-list" style="color: #10b981;"></i>
+                                            {% else %}<i class="fas fa-file-alt" style="color: #f59e0b;"></i>{% endif %}
+                                            <span style="margin-left: 8px; font-weight: 500;">{{ lesson.title }}</span>
+                                        </span>
+                                    </div>
+                                    <div style="display:flex; gap: 8px;">
+                                        {% if not lesson.assignment and lesson.content_format != 'quiz' %}
+                                            <a href="{% url 'instructor_assignment_create' lesson.id %}" title="Add Assignment" style="color: var(--gray-700);"><i class="fas fa-plus-square"></i></a>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p style="color: var(--gray-700); font-size: 0.9rem; text-align: center; padding: 16px 0;">No content yet. Click "+ Content" to add a lesson, quiz, or assignment.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div style="text-align: center; padding: 40px 20px; border: 2px dashed var(--gray-200); border-radius: 8px;">
+                        <i class="fas fa-book-open" style="font-size: 2rem; color: var(--gray-200); margin-bottom: 12px;"></i>
+                        <p style="color: var(--gray-700); font-weight: 500;">Start building your course!</p>
+                        <p style="color: var(--gray-700); font-size: 0.9rem; margin-bottom: 16px;">Add your first module to organize your content.</p>
+                        <a href="{% url 'instructor_section_create' course.id %}" class="btn btn-primary">Add Module</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Tab Content: Announcements -->
+            <div id="tab-announcements" style="padding: 24px; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.1rem;">Course Announcements</h3>
+                    <a href="{% url 'instructor_announcement_create' course.id %}" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;"><i class="fas fa-bullhorn"></i> New Announcement</a>
+                </div>
+                
+                {% if course.announcements.all %}
+                    {% for ann in course.announcements.all %}
+                    <div style="border: 1px solid var(--gray-200); border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+                        <div style="font-weight: 600; font-size: 1.05rem; margin-bottom: 4px;">{{ ann.title }}</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-700); margin-bottom: 12px;">{{ ann.created_at|date:"M d, Y h:i A" }}</div>
+                        <div style="font-size: 0.95rem; color: var(--dark);">{{ ann.content|linebreaks }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: var(--gray-700); font-size: 0.9rem; text-align: center; padding: 24px 0;">No announcements posted yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Tools -->
+    <div>
+        <div class="card" style="margin-bottom: 24px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 16px;">Course Settings</h3>
+            
+            {% if course.status == 'draft' %}
+            <form method="post" action="{% url 'request_course_review' course.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 12px;">Publish Request</button>
+            </form>
+            {% endif %}
+            
+            <a href="{% url 'instructor_quiz_create' course.id %}" class="btn btn-outline" style="width: 100%; margin-bottom: 12px; justify-content: flex-start;"><i class="fas fa-question-circle" style="width: 24px;"></i> Create Quiz Bank</a>
+            
+            <a href="{% url 'csv_upload_students' course.id %}" class="btn btn-outline" style="width: 100%; margin-bottom: 12px; justify-content: flex-start;"><i class="fas fa-users" style="width: 24px;"></i> Bulk Enroll Students</a>
+            
+            <a href="{% url 'export_course_grades' course.id %}" class="btn btn-outline" style="width: 100%; margin-bottom: 24px; justify-content: flex-start;"><i class="fas fa-file-download" style="width: 24px;"></i> Export Grades</a>
+            
+            <hr style="border: 0; border-top: 1px solid var(--gray-200); margin-bottom: 24px;">
+            
+            <form method="post" action="{% url 'instructor_course_delete' course.id %}" onsubmit="return confirm('DANGER: Delete this entire course?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" style="width: 100%;">Delete Course</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- SortableJS for Drag and Drop -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    function switchTab(tabId) {
+        document.getElementById('tab-curriculum').style.display = 'none';
+        document.getElementById('tab-announcements').style.display = 'none';
+        
+        const btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(b => {
+            b.style.borderBottomColor = 'transparent';
+            b.style.color = 'var(--gray-700)';
+        });
+        
+        document.getElementById('tab-' + tabId).style.display = 'block';
+        
+        const activeBtn = Array.from(btns).find(b => b.textContent.toLowerCase().includes(tabId));
+        if(activeBtn) {
+            activeBtn.style.borderBottomColor = 'var(--primary)';
+            activeBtn.style.color = 'var(--primary)';
+        }
+    }
+
+    // Initialize Sortable for each lesson list
+    document.addEventListener("DOMContentLoaded", function() {
+        const lists = document.querySelectorAll('.lesson-list');
+        lists.forEach(list => {
+            new Sortable(list, {
+                animation: 150,
+                ghostClass: 'bg-gray-100',
+                onEnd: function (evt) {
+                    // Collect new order
+                    let items = evt.from.children;
+                    let payload = [];
+                    for(let i=0; i<items.length; i++) {
+                        payload.push({
+                            id: items[i].getAttribute('data-id'),
+                            order: i + 1
+                        });
+                    }
+                    
+                    // Send to backend via AJAX
+                    fetch('{% url "api_reorder_lessons" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    }).then(res => res.json()).then(data => {
+                        if(data.status === 'success') {
+                            console.log('Reordered successfully');
+                        } else {
+                            alert('Error reordering lessons');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

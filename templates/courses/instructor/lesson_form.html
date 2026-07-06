@@ -1,0 +1,41 @@
+{% extends 'courses/instructor/instructor_base.html' %}
+{% block title %}Add Lesson{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+    <a href="{% url 'instructor_course_manage' section.course.id %}" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Back to Course Builder
+    </a>
+</div>
+
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <h2 class="text-center" style="margin-top:0;">Add Lesson to <span style="color:var(--accent);">"{{ section.title }}"</span></h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Lesson Title</label>
+            <input type="text" name="title" class="form-control" placeholder="e.g. Setting up the environment" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Format</label>
+            <select name="content_format" class="form-control" required>
+                <option value="text">Text/Article</option>
+                <option value="video">Video Embed</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Content (Text or YouTube Embed Code)</label>
+            <textarea name="content" class="form-control" rows="10" placeholder="Type your lesson content here or paste a video iframe embed code..." required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>Sequence Order</label>
+            <input type="number" name="order" class="form-control" value="1" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Lesson</button>
+    </form>
+</div>
+{% endblock %}

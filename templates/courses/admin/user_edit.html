@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+<div class="back-btn-row">
+    <a href="{% url 'admin_users' %}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Users</a>
+</div>
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>Edit User: {{ user_obj.username }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" value="{{ user_obj.username }}" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" value="{{ user_obj.email }}" required>
+        </div>
+        <div class="form-group">
+            <label>First Name</label>
+            <input type="text" name="first_name" class="form-control" value="{{ user_obj.first_name }}">
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" name="last_name" class="form-control" value="{{ user_obj.last_name }}">
+        </div>
+        <div class="form-group">
+            <label>Role</label>
+            <select name="role" class="form-control" required>
+                <option value="student" {% if user_obj.role == 'student' %}selected{% endif %}>Student</option>
+                <option value="instructor" {% if user_obj.role == 'instructor' %}selected{% endif %}>Instructor</option>
+                <option value="superadmin" {% if user_obj.role == 'superadmin' %}selected{% endif %}>Super Admin</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

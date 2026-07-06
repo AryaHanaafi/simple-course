@@ -20,7 +20,7 @@ Proyek ini adalah implementasi tahap awal (Progress 1) untuk membangun Simple LM
    ```bash
    docker compose exec web python manage.py migrate
    ```
-6. Buka browser dan akses aplikasi di: **http://localhost:8000**
+6. Buka browser dan akses aplikasi di: **http://localhost:8080**
 
 ---
 
@@ -83,7 +83,7 @@ Interface admin telah disesuaikan agar informatif dan fungsional:
 - **Advanced Filtering:** Tersedia filter berdasarkan role user dan kategori course.
 - **Inline Lessons:** Pengelolaan materi (Lesson) dapat dilakukan langsung di dalam halaman pengeditan Course.
 
-Akses Panel Admin: **[http://localhost:8000/admin](http://localhost:8000/admin)**
+Akses Panel Admin: **[http://localhost:8080/admin](http://localhost:8080/admin)**
 
 ---
 
@@ -175,4 +175,4 @@ Untuk pengujian API secara menyeluruh (Register, Login, CRUD), *Postman Collecti
    docker compose exec web python manage.py migrate
    ```
 3. **Akses Swagger UI:**
-   Buka browser dan navigasikan ke `http://localhost:8000/api/docs` untuk mulai menguji API.
+   Buka browser dan navigasikan ke `http://localhost:8080/api/docs` untuk mulai menguji API.

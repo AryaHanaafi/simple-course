@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Admin Command Center{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 style="margin: 0;">Admin Command Center</h2>
+</div>
+
+<!-- STAT CARDS -->
+<div class="grid mb-4">
+    <div class="card d-flex flex-column justify-content-center align-items-center" style="border-top: 4px solid var(--accent);">
+        <i class="fas fa-users fs-4 mb-2" style="color: var(--accent);"></i>
+        <h3 class="text-muted" style="margin: 0; font-size: 1rem;">Total Students</h3>
+        <p style="font-size: 2.5rem; margin: 5px 0 0 0; font-weight: 700; color: var(--text-primary);">{{ stats.total_students }}</p>
+    </div>
+    <div class="card d-flex flex-column justify-content-center align-items-center" style="border-top: 4px solid var(--warning);">
+        <i class="fas fa-chalkboard-teacher fs-4 mb-2" style="color: var(--warning);"></i>
+        <h3 class="text-muted" style="margin: 0; font-size: 1rem;">Total Instructors</h3>
+        <p style="font-size: 2.5rem; margin: 5px 0 0 0; font-weight: 700; color: var(--text-primary);">{{ stats.total_instructors }}</p>
+    </div>
+    <div class="card d-flex flex-column justify-content-center align-items-center" style="border-top: 4px solid var(--success);">
+        <i class="fas fa-book fs-4 mb-2" style="color: var(--success);"></i>
+        <h3 class="text-muted" style="margin: 0; font-size: 1rem;">Total Courses</h3>
+        <p style="font-size: 2.5rem; margin: 5px 0 0 0; font-weight: 700; color: var(--text-primary);">{{ stats.total_courses }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="card-title">Pending Course Reviews</h3>
+    {% if pending_courses %}
+        <table style="width:100%; text-align:left; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <th style="padding: 10px;">Course Title</th>
+                    <th style="padding: 10px;">Instructor</th>
+                    <th style="padding: 10px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in pending_courses %}
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 10px;">{{ course.title }}</td>
+                    <td style="padding: 10px;">{{ course.instructor.username }}</td>
+                    <td style="padding: 10px;">
+                        <a href="{% url 'review_course' course.id %}" class="btn btn-primary" style="padding: 4px 8px; font-size: 0.8rem;">Review</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Pagination for Pending Courses -->
+        {% if pending_courses.has_other_pages %}
+        <div class="pagination">
+            {% if pending_courses.has_previous %}
+                <a href="?page_pending={{ pending_courses.previous_page_number }}">&laquo; Prev</a>
+            {% endif %}
+            <span class="current">Page {{ pending_courses.number }} of {{ pending_courses.paginator.num_pages }}</span>
+            {% if pending_courses.has_next %}
+                <a href="?page_pending={{ pending_courses.next_page_number }}">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <p>No courses pending review.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3 class="card-title">All Courses (Super Access)</h3>
+    <table style="width:100%; text-align:left; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 1px solid var(--border);">
+                <th style="padding: 10px;">Course Title</th>
+                <th style="padding: 10px;">Status</th>
+                <th style="padding: 10px;">Instructor</th>
+                <th style="padding: 10px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in all_courses %}
+            <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 10px;">{{ course.title }}</td>
+                <td style="padding: 10px;"><span class="badge badge-{{ course.status }}">{{ course.get_status_display }}</span></td>
+                <td style="padding: 10px;">
+                    {{ course.instructor.username }}
+                </td>
+                <td style="padding: 10px;">
+                    <a href="{% url 'admin_course_edit' course.id %}" class="btn" style="padding: 4px 8px; font-size:0.8rem;">Edit</a>
+                    <form method="post" action="{% url 'admin_course_delete' course.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger confirm-action" data-confirm="FORCE DELETE this course?" style="padding: 4px 8px; font-size:0.8rem;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 10px;">No courses available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Pagination for All Courses -->
+    {% if all_courses.has_other_pages %}
+    <div class="pagination">
+        {% if all_courses.has_previous %}
+            <a href="?page_all={{ all_courses.previous_page_number }}">&laquo; Prev</a>
+        {% endif %}
+        <span class="current">Page {{ all_courses.number }} of {{ all_courses.paginator.num_pages }}</span>
+        {% if all_courses.has_next %}
+            <a href="?page_all={{ all_courses.next_page_number }}">Next &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
