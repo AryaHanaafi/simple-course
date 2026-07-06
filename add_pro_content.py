@@ -76,11 +76,11 @@ def generate_pro_content():
 
     cat, _ = Category.objects.get_or_create(name="Pemrograman Web", slug="web", description="Kategori Web Development")
     
-    Course.objects.get_or_create(slug='html-css', defaults={'title': 'Dasar-Dasar HTML & CSS', 'category': cat, 'instructor': instructors[0], 'difficulty': 'beginner', 'is_published': True})
-    Course.objects.get_or_create(slug='django', defaults={'title': 'Backend dengan Python Django', 'category': cat, 'instructor': instructors[1], 'difficulty': 'intermediate', 'is_published': True})
-    Course.objects.get_or_create(slug='enterprise', defaults={'title': 'Arsitektur Web Enterprise', 'category': cat, 'instructor': instructors[2], 'difficulty': 'advanced', 'is_published': True})
-    Course.objects.get_or_create(slug='js-modern', defaults={'title': 'Penguasaan JavaScript Modern', 'category': cat, 'instructor': instructors[0], 'difficulty': 'intermediate', 'is_published': True})
-    Course.objects.get_or_create(slug='devops-web', defaults={'title': 'DevOps untuk Web Developer', 'category': cat, 'instructor': instructors[1], 'difficulty': 'advanced', 'is_published': True})
+    Course.objects.get_or_create(slug='html-css', defaults={'title': 'Dasar-Dasar HTML & CSS', 'category': cat, 'instructor': instructors[0], 'difficulty': 'beginner', 'status': 'published'})
+    Course.objects.get_or_create(slug='django', defaults={'title': 'Backend dengan Python Django', 'category': cat, 'instructor': instructors[1], 'difficulty': 'intermediate', 'status': 'published'})
+    Course.objects.get_or_create(slug='enterprise', defaults={'title': 'Arsitektur Web Enterprise', 'category': cat, 'instructor': instructors[2], 'difficulty': 'advanced', 'status': 'published'})
+    Course.objects.get_or_create(slug='js-modern', defaults={'title': 'Penguasaan JavaScript Modern', 'category': cat, 'instructor': instructors[0], 'difficulty': 'intermediate', 'status': 'published'})
+    Course.objects.get_or_create(slug='devops-web', defaults={'title': 'DevOps untuk Web Developer', 'category': cat, 'instructor': instructors[1], 'difficulty': 'advanced', 'status': 'published'})
     
     courses = Course.objects.all()
         
