@@ -90,7 +90,7 @@ DATABASES = {
 }
 
 db_url = os.environ.get('DATABASE_URL', '')
-if db_url and 'supabase.co' not in db_url:
+if db_url and '.supabase.co' not in db_url:
     DATABASES['default'] = dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
