@@ -49,8 +49,20 @@ def generate_pro_content():
     
     courses = Course.objects.all()
     if not courses.exists():
-        print("Tidak ada kursus ditemukan!")
-        return
+        print("Tidak ada kursus ditemukan! Membuat kursus dasar secara otomatis...")
+        from courses.models import Category
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        admin_user = User.objects.filter(is_superuser=True).first()
+        if not admin_user:
+            admin_user = User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
+            
+        cat, _ = Category.objects.get_or_create(name="Pemrograman Web", slug="web", description="Kategori Web Development")
+        Course.objects.create(title='Dasar-Dasar HTML & CSS', slug='html-css', category=cat, instructor=admin_user, difficulty='beginner', is_published=True)
+        Course.objects.create(title='Backend dengan Python Django', slug='django', category=cat, instructor=admin_user, difficulty='intermediate', is_published=True)
+        Course.objects.create(title='Arsitektur Web Enterprise', slug='enterprise', category=cat, instructor=admin_user, difficulty='advanced', is_published=True)
+        
+        courses = Course.objects.all()
         
     course_structures = {
         "beginner": [
