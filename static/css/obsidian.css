@@ -1098,7 +1098,11 @@ tr:hover td {
     }
 
     .grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+    }
+
+    .cover-image {
+        margin: -20px -20px 16px -20px !important;
     }
 
     .card {
