@@ -544,6 +544,47 @@ body.dark-mode .dropdown-item:hover {
     background-color: #334155;
 }
 
+
+/* ====== DARK MODE ====== */
+body.dark-mode {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --border: #334155;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .form-control {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-mode th {
+    background-color: #0f172a;
+}
+
+body.dark-mode tr:hover td {
+    background-color: #1e293b;
+}
+
+body.dark-mode .dropdown-toggle {
+    background: #334155;
+}
+
+body.dark-mode .dropdown-toggle:hover {
+    background: #475569;
+}
+
+body.dark-mode .dropdown-item:hover {
+    background-color: #334155;
+}
+
 body.dark-mode .content-body pre {
     border-color: #334155;
     background-color: #000000;
@@ -552,10 +593,12 @@ body.dark-mode .content-body pre {
 /* ====== MOBILE RESPONSIVENESS ====== */
 @media (max-width: 768px) {
     .header {
+        position: relative;
         flex-direction: column;
         padding: 16px;
         height: auto;
         gap: 16px;
+        z-index: 1000;
     }
     
     .header .brand {
@@ -569,6 +612,7 @@ body.dark-mode .content-body pre {
         margin: 0 !important;
         justify-content: center;
         flex-wrap: wrap;
+        gap: 12px;
     }
     
     form[action*='student_catalog'] {
@@ -579,7 +623,8 @@ body.dark-mode .content-body pre {
     
     .container {
         padding: 16px;
-        margin-top: 16px;
+        padding-top: 24px; /* Override 100px desktop padding since header is relative */
+        margin-top: 0;
     }
     
     .grid {
@@ -595,5 +640,12 @@ body.dark-mode .content-body pre {
     .btn {
         padding: 8px 16px;
         font-size: 0.85rem;
+    }
+    
+    /* Make dark mode toggle accessible on mobile */
+    #themeToggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
     }
 }
