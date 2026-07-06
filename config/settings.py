@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x!30d@u0!1-&ezq6asj6i$4+)p4_-hm#u8)+8r@gzclon-yk_x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('RENDER', '') == ''
+DEBUG = False
 
 ALLOWED_HOSTS = ['*'] # Allowed everywhere for now, especially on Render
 
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'courses',
-    'silk',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'silk.middleware.SilkyMiddleware',
     'courses.middleware.RateLimitMiddleware',
     'courses.middleware.APIErrorMiddleware',
 ]

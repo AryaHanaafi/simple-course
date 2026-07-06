@@ -42,6 +42,9 @@
         </form>
 
         <div class="d-flex align-items-center gap-3">
+            <button id="themeToggle" style="background:transparent; border:none; color:var(--text-secondary); font-size:1.2rem; cursor:pointer;" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
             {% if user.is_authenticated %}
                 <div class="d-flex gap-2" style="margin-right: 16px;">
                 {% if user.role == 'superadmin' or user.is_superuser %}
@@ -126,6 +129,30 @@
                     }
                 }
             }
+        }
+
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.querySelector('#themeToggle i');
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('theme', 'light');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#themeToggle i').classList.replace('fa-moon', 'fa-sun');
         }
     </script>
     <script src="/static/js/app.js"></script>
