@@ -33,6 +33,19 @@
         {% endif %}
     </div>
 
+    {% if course.announcements.all %}
+    <div style="margin: 30px 0;">
+        <h3 style="color: var(--accent-color); margin-bottom: 15px;"><i class="fas fa-bullhorn"></i> Announcements</h3>
+        {% for ann in course.announcements.all %}
+        <div style="background: var(--card-bg-2); border-left: 4px solid var(--accent-color); padding: 15px; margin-bottom: 15px; border-radius: 4px; box-shadow: var(--shadow-sm);">
+            <h4 style="margin-top: 0; margin-bottom: 8px;">{{ ann.title }}</h4>
+            <p style="margin: 0; color: var(--text-secondary); font-size: 0.95rem;">{{ ann.content|linebreaksbr }}</p>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">Posted on {{ ann.created_at|date:"d M Y" }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <h3>Course Content</h3>
     <div style="margin-top: 15px;">
         {% for section in sections %}
