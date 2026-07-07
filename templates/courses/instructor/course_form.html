@@ -8,19 +8,23 @@
         {% csrf_token %}
         <div class="form-group">
             <label>Course Title</label>
-            <input type="text" name="title" class="form-control" required>
+            <input type="text" name="title" class="form-control" value="{{ form.title.value|default:'' }}" required>
+            <small style="color: var(--danger);">{{ form.title.errors.0 }}</small>
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            {{ form.category }}
+            <small style="color: var(--danger);">{{ form.category.errors.0 }}</small>
         </div>
         <div class="form-group">
             <label>Description</label>
-            <textarea name="description" class="form-control" rows="5" required></textarea>
+            <textarea name="description" class="form-control" rows="5" required>{{ form.description.value|default:'' }}</textarea>
+            <small style="color: var(--danger);">{{ form.description.errors.0 }}</small>
         </div>
         <div class="form-group">
             <label>Difficulty</label>
-            <select name="difficulty" class="form-control" required>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-            </select>
+            {{ form.difficulty }}
+            <small style="color: var(--danger);">{{ form.difficulty.errors.0 }}</small>
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%;">Save as Draft</button>

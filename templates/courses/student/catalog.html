@@ -9,11 +9,11 @@
     
     <form method="get" style="display: flex; flex-wrap: wrap; gap: 12px; max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 8px; border-radius: 12px; box-shadow: var(--shadow-md);">
         <div style="flex: 2; position: relative; display: flex; align-items: center;">
-            <i class="fas fa-search" style="position: absolute; left: 16px; color: #94a3b8;"></i>
+            <i class="fas fa-search" style="position: absolute; left: 16px; color: var(--text-muted);"></i>
             <input type="text" name="q" value="{{ query }}" placeholder="Search courses..." class="form-control" style="padding-left: 40px; border: none; box-shadow: none; background: transparent;">
         </div>
         
-        <div style="width: 1px; background: #e2e8f0; margin: 8px 0;"></div>
+        <div style="width: 1px; background: var(--border); margin: 8px 0;"></div>
         
         <select name="category" class="form-control" style="flex: 1; border: none; box-shadow: none; background: transparent;">
             <option value="">All Categories</option>
@@ -22,7 +22,7 @@
             {% endfor %}
         </select>
 
-        <div style="width: 1px; background: #e2e8f0; margin: 8px 0;"></div>
+        <div style="width: 1px; background: var(--border); margin: 8px 0;"></div>
 
         <select name="difficulty" class="form-control" style="flex: 1; border: none; box-shadow: none; background: transparent;">
             <option value="">All Levels</option>
@@ -64,7 +64,7 @@
     </div>
     {% empty %}
     <div style="grid-column: 1 / -1; text-align: center; padding: 64px 24px;">
-        <i class="fas fa-search" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 16px;"></i>
+        <i class="fas fa-search" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 16px;"></i>
         <h3 style="color: var(--text-secondary);">No courses found matching your criteria.</h3>
     </div>
     {% endfor %}
