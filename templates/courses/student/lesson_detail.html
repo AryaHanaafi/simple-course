@@ -19,8 +19,8 @@
             <div class="video-container" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);">
                 {{ lesson.content|safe }}
             </div>
-        {% elif lesson.content_format == 'text' %}
-            <div class="content-body" style="margin-bottom: 24px;">
+        {% else %}
+            <div class="content-body" style="margin-bottom: 24px; color: var(--text-secondary); line-height: 1.6;">
                 {{ lesson.content|safe }}
             </div>
         {% endif %}
