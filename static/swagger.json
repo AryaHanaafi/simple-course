@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "NextGen Pro LMS API",
-        "description": "API documentation for the Simple LMS project.",
+        "description": "Lengkap: 27 API endpoints untuk UAS Pemrograman Sisi Server.",
         "version": "1.0.0"
     },
     "servers": [
@@ -28,7 +28,6 @@
                     "Auth"
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -47,22 +46,18 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Successful login"
-                    },
-                    "401": {
-                        "description": "Invalid credentials"
+                        "description": "OK"
                     }
                 }
             }
         },
         "/auth/register": {
             "post": {
-                "summary": "Register new user",
+                "summary": "Register User",
                 "tags": [
                     "Auth"
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -78,11 +73,7 @@
                                         "type": "string"
                                     },
                                     "role": {
-                                        "type": "string",
-                                        "enum": [
-                                            "student",
-                                            "instructor"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -91,73 +82,127 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "User registered"
-                    },
-                    "400": {
-                        "description": "Error"
-                    }
-                }
-            }
-        },
-        "/courses": {
-            "get": {
-                "summary": "Get all published courses",
-                "tags": [
-                    "Public"
-                ],
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "category",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of courses"
+                        "description": "Created"
                     }
                 }
             }
         },
         "/categories": {
             "get": {
-                "summary": "Get all categories",
+                "summary": "Get Categories",
                 "tags": [
                     "Public"
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of categories"
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/courses": {
+            "get": {
+                "summary": "Get Courses",
+                "tags": [
+                    "Public"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/courses/{course_id}": {
+            "get": {
+                "summary": "Course Detail",
+                "tags": [
+                    "Public"
+                ],
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/learning-paths": {
+            "get": {
+                "summary": "Get Learning Paths",
+                "tags": [
+                    "Public"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/learning-paths/{path_id}": {
+            "get": {
+                "summary": "Path Detail",
+                "tags": [
+                    "Public"
+                ],
+                "parameters": [
+                    {
+                        "name": "path_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/courses/{course_id}/enroll": {
+            "post": {
+                "summary": "Enroll in Course",
+                "tags": [
+                    "Student"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
         },
         "/student/dashboard": {
             "get": {
-                "summary": "Get student dashboard stats",
+                "summary": "Student Dashboard",
                 "tags": [
                     "Student"
                 ],
@@ -168,17 +213,62 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Dashboard data"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/student/lesson/{lesson_id}/complete": {
+            "post": {
+                "summary": "Complete Lesson",
+                "tags": [
+                    "Student"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/profile/update": {
+            "post": {
+                "summary": "Update Profile",
+                "tags": [
+                    "Student",
+                    "Instructor",
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
         },
         "/instructor/stats": {
             "get": {
-                "summary": "Get instructor stats",
+                "summary": "Instructor Stats",
                 "tags": [
                     "Instructor"
                 ],
@@ -189,14 +279,208 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Stats data"
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/instructor/courses": {
+            "get": {
+                "summary": "My Courses",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/instructor/courses/create": {
+            "post": {
+                "summary": "Create Course",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/instructor/courses/{course_id}/delete": {
+            "delete": {
+                "summary": "Delete Course",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/instructor/courses/{course_id}/sections": {
+            "post": {
+                "summary": "Add Section",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/instructor/courses/{course_id}/announcements": {
+            "post": {
+                "summary": "Add Announcement",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/instructor/sections/{section_id}/lessons": {
+            "post": {
+                "summary": "Add Lesson",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "section_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/instructor/lessons/{lesson_id}/assignments": {
+            "post": {
+                "summary": "Add Assignment",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "lesson_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/instructor/lessons/reorder/": {
+            "post": {
+                "summary": "Reorder Lessons",
+                "tags": [
+                    "Instructor"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
         },
         "/admin/stats": {
             "get": {
-                "summary": "Get admin stats",
+                "summary": "Admin Stats",
                 "tags": [
                     "Admin"
                 ],
@@ -207,7 +491,145 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Admin stats data"
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/admin/users": {
+            "get": {
+                "summary": "Get All Users",
+                "tags": [
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/admin/users/create": {
+            "post": {
+                "summary": "Create User",
+                "tags": [
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/admin/users/{user_id}/delete": {
+            "delete": {
+                "summary": "Delete User",
+                "tags": [
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/admin/courses/{course_id}/review": {
+            "post": {
+                "summary": "Review Course",
+                "tags": [
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/admin/categories/create": {
+            "post": {
+                "summary": "Create Category",
+                "tags": [
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/admin/categories/{category_id}/delete": {
+            "delete": {
+                "summary": "Delete Category",
+                "tags": [
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
