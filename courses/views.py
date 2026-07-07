@@ -612,3 +612,7 @@ def certificate_view(request, course_id):
         'course': course,
         'student': request.user
     })
+
+
+def swagger_ui(request):
+    return render(request, 'swagger_ui.html')

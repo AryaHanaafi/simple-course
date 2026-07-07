@@ -61,6 +61,8 @@ urlpatterns = [
     path('learning-paths/<slug:slug>/', views.learning_path_detail, name='learning_path_detail'),
 
     # API Endpoints for Postman Testing
+    path('api/docs/', views.swagger_ui, name='swagger_ui'),
+    
     # Auth
     path('api/auth/register', api_views.api_register, name='api_register'),
     path('api/auth/login', api_views.api_login, name='api_login'),
