@@ -34,7 +34,7 @@ class RateLimitMiddleware:
             # Filter timestamps to only keep those within the last 60 seconds
             request_times = [t for t in request_times if current_time - t < 60]
             
-            if len(request_times) >= 9999:  # Disabled for local testing
+            if len(request_times) >= 5:
                 if request.path.startswith('/api/'):
                     from django.http import JsonResponse
                     return JsonResponse({'status': 'error', 'message': 'Rate limit exceeded. Please wait a minute before trying again.'}, status=429)
