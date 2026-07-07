@@ -5,7 +5,7 @@ import random
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from courses.models import Course, Section, Lesson
+from courses.models import Course, Section, Lesson, LearningPath, LearningPathCourse
 
 def generate_long_text(title, course_title):
     return f"""
@@ -180,3 +180,30 @@ def generate_pro_content():
 
 if __name__ == "__main__":
     generate_pro_content()
+
+
+# Create Learning Paths
+def create_learning_paths():
+    paths_data = [
+        {
+            'title': 'Frontend Developer Path',
+            'desc': 'Master HTML, CSS, JavaScript and React to become a top-tier frontend developer.'
+        },
+        {
+            'title': 'Fullstack Python Mastery',
+            'desc': 'Learn Python, Django, and Databases to build robust web applications from scratch.'
+        }
+    ]
+
+    courses = list(Course.objects.all())
+    if courses:
+        for data in paths_data:
+            path, created = LearningPath.objects.get_or_create(title=data['title'], defaults={'description': data['desc']})
+            if created:
+                import random
+                selected_courses = random.sample(courses, min(2, len(courses)))
+                for i, course in enumerate(selected_courses):
+                    LearningPathCourse.objects.create(learning_path=path, course=course, order=i+1)
+                print(f'Created Learning Path: {path.title}')
+
+create_learning_paths()
