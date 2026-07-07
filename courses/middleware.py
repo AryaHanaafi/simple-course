@@ -12,16 +12,8 @@ class RateLimitMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        restricted_exact = ['/', '/api/auth/login', '/api/auth/register']
-        restricted_contains = ['/submit/']
-        
-        path_needs_limiting = False
-        if request.path in restricted_exact:
-            path_needs_limiting = True
-        elif any(p in request.path for p in restricted_contains):
-            path_needs_limiting = True
-        
-        if request.method == 'POST' and path_needs_limiting:
+        # Apply to all pages except static files and media
+        if not request.path.startswith('/static/') and not request.path.startswith('/media/'):
             ip = self.get_client_ip(request)
             # Create a unique cache key per IP and Path
             cache_key = f"ratelimit_{ip}_{request.path}"
