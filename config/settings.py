@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'courses',
+    'courses.apps.CoursesConfig',
+    'ninja_simple_jwt',
 ]
 
 MIDDLEWARE = [
